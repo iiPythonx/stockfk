@@ -82,9 +82,6 @@ class Stocks:
         for _ in range(10):
             await self.step(preloading = True)
 
-        while not await asyncio.sleep(5):
-            await self.step()
-
     async def step(self, preloading: bool = False) -> None:
 
         # Apply a random amount of general market change

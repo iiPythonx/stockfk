@@ -1,0 +1,119 @@
+/* Variables */
+:root {
+    --main-foreground: #fff;
+    --main-background: #101010;
+    --section-background: #141414;
+    --border-radius: 8px;
+    --flex-gap: 2.5rem;
+}
+
+/* Fonts */
+@font-face {
+    font-family: "Noto Sans";
+    font-weight: normal;
+    src: url(../fonts/noto.woff2);
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    font-weight: bold;
+    src: url(../fonts/noto-bold.woff2);
+}
+
+/* Main styling */
+* {
+    color: var(--main-foreground);
+    margin: 0px;
+    font-family: "Noto Sans", sans-serif;
+}
+
+body, html, main {
+    height: 100%;
+}
+
+main {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: var(--main-background);
+}
+
+.logo {
+    width: 400px;
+    image-rendering: pixelated;
+}
+
+/* Section styling */
+section {
+    width: 500px;
+    height: 500px;
+    background: var(--section-background);
+    border-radius: var(--border-radius);
+
+    /* Sick style!! */
+    gap: 1rem;
+    padding: 1rem;
+
+    /* Internal alignment */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+input {
+    background: none;
+    padding: .5rem;
+    outline: none;
+    border-radius: var(--border-radius);
+
+    /* Border shenanigans */
+    border: 1px solid #3a3a3a;
+    transition: border-color .5s ease;
+
+    &:focus {
+        border-color: #095700;
+    }
+}
+
+label {
+    font-size: small;
+}
+
+fieldset {
+    border-color: #3a3a3a;
+    display: flex;
+    gap: .5rem;
+    flex-direction: column;
+    border-radius: var(--border-radius);
+    width: calc(100% - 2rem);
+}
+
+button {
+    background: #095700;
+    border: none;
+    width: fit-content;
+    cursor: pointer;
+    padding: 4px 20px;
+    border-radius: var(--border-radius);
+    
+    /* Hover effect */
+    transition: opacity 250ms ease;
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+/* Eyecandy */
+section, button {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Utilities */
+.flex {
+    display: flex;
+
+    &:not(section) {
+        gap: var(--flex-gap);
+    }
+}
