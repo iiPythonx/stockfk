@@ -1,0 +1,98 @@
+{
+    "banana_blight": {
+        "text": "Rapid-spreading banana-eating disease discovered",
+        "tick": {"BAN": -0.20}
+    },
+    "banana_record_harvest": {
+        "text": "Tropical bananas experience record harvest",
+        "tick": {"BAN": 0.18}
+    },
+    "banana_bread": {
+        "text": "Life enhancing banana bread engineered",
+        "tick": {"BAN": 0.12}
+    },
+    "banana_monkey_raid": {
+        "text": "Monkeys caught raiding banana supply chain",
+        "tick": {"BAN": -0.15}
+    },
+    "dogcoin_celeb": {
+        "text": "Melon Husk endorses Dogcoin on now defunct platform Chirp",
+        "tick": {"DOG": 0.35}
+    },
+    "dogcoin_wallet_breach": {
+        "text": "Rumors of Dogcoin wallet breach spread online",
+        "tick": {"DOG": -0.30}
+    },
+    "dogcoin_miners_reserve": {
+        "text": "Dogcoin miners discover massive coin reserve",
+        "tick": {"DOG": 0.22}
+    },
+    "dogcoin_discord_sell": {
+        "text": "Widespread Dogcoin panic on Discord results in mass selling",
+        "tick": {"DOG": -0.18}
+    },
+    "catgirl_anime_expo": {
+        "text": "Catgirl Robotics to partner with upcoming Anime expo in New York",
+        "tick": {"CAT": 0.20}
+    },
+    "catgirl_robot_malfunction": {
+        "text": "Robot malfunction clip goes viral on Chirp",
+        "tick": {"CAT": -0.16}
+    },
+    "catgirl_military_contract": {
+        "text": "Rumors around upcoming military contract with Catgirl Robotics spread",
+        "tick": {"CAT": 0.28}
+    },
+    "catgirl_engineers": {
+        "text": "Catgirl Robotics engineers suddenly disappear, mass panic ensues",
+        "tick": {"CAT": -0.12}
+    },
+    "rat_championship": {
+        "text": "Rat Racing League (RRL) championship season announced",
+        "tick": {"RAT": 0.24}
+    },
+    "rat_dope": {
+        "text": "Rat doping scandal spreads like wildfire, ratletes concerned",
+        "tick": {"RAT": -0.22}
+    },
+    "rat_star": {
+        "text": "Star ratlete Busain Rolt retires after huge three day career",
+        "tick": {"RAT": -0.14}
+    },
+    "rat_bet_volume": {
+        "text": "Bets are exploding for the Rat Racing League, non-ratletes fuming",
+        "tick": {"RAT": 0.15}
+    },
+    "oil_pipeline": {
+        "text": "New major oil pipeline constructed south of Los Angeles",
+        "tick": {"TLO": 0.10}
+    },
+    "oil_spill": {
+        "text": "\"trust me bro\" oil pipeline experiences huge spill, chaos ensues",
+        "tick": {"TLO": -0.18}
+    },
+    "oil_spike": {
+        "text": "New import of gas guzzling vehicles spikes oil and gas demand",
+        "tick": {"TLO": 0.14}
+    },
+    "oil_fines": {
+        "text": "Totally Legit Oil fined by U.S. government for encouraging drinking oil",
+        "tick": {"TLO": -0.12}
+    },
+    "ufo_footage_leaks": {
+        "text": "Alleged crash footage of multiple UFOs leak online",
+        "tick": {"UFO": 0.30}
+    },
+    "ufo_hoax": {
+        "text": "Celebrities come together to expose major UFO hoax on Chirp",
+        "tick": {"UFO": -0.25}
+    },
+    "ufo_hearing": {
+        "text": "Government hearing regarding UAPs/UFOs announced for August 2032",
+        "tick": {"UFO": 0.18}
+    },
+    "ufo_tinfoil": {
+        "text": "Major tin foil shortage results in UFO industry crashing",
+        "tick": {"UFO": -0.45}
+    }
+}
