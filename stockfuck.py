@@ -89,7 +89,6 @@ class Stocks:
             old_price = self.stock_prices[ticker]
             change = randint(-20, 20)
             self.stock_prices[ticker] *= 1 + (change / 100)
-            print(f"{ticker} ({GAME_TICKERS[ticker]}) just went from ${old_price:.2f} to ${self.stock_prices[ticker]:.2f} [{'red' if change < 0 else 'green'}]({change:+}%)")
 
         # Afterwards, apply events
         event_count, events_used = randint(GAME_EVENT_MIN, GAME_EVENT_MAX), []
