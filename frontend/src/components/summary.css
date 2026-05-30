@@ -1,9 +1,15 @@
-/* Loading spinner */
+/* Join */
+.error {
+    color: #f00;
+    font-size: small;
+}
+
 .subtitle {
     font-size: small;
     opacity: .5;
 }
 
+/* Loading spinner */
 .loading-spinner {
     box-sizing: border-box;
     display: inline-block;

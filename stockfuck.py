@@ -2,12 +2,15 @@
 # Stockfuck - Multiplayer stock market game thing
 
 # Modules
+from dataclasses import dataclass
 import json
-import asyncio
 import math
+import asyncio
+import typing
 from random import randint, choice
 from pathlib import Path
 
+from websockets import ConnectionClosed
 from websockets.asyncio.server import ServerConnection, serve
 
 # Initialize rich
@@ -31,6 +34,15 @@ DATA_FOLDER  = Path(__file__).parent / "data"
 GAME_EVENTS  = json.loads((DATA_FOLDER / "events.json").read_text())
 GAME_TICKERS = json.loads((DATA_FOLDER / "tickers.json").read_text())
 
+# Typing
+@dataclass
+class Packet:
+    type: typing.Literal["error", "players", "acknowledge"]
+    data: dict[str, typing.Any]
+
+    def serialize(self, extra: dict[str, typing.Any] = {}) -> str:
+        return json.dumps({"type": self.type, "data": self.data} | extra)
+
 # Game logic
 class Player:
     def __init__(self, websocket: ServerConnection, market: "Stocks") -> None:
@@ -42,6 +54,9 @@ class Player:
 
         # Initialize share count
         self.shares = {ticker: 0 for ticker in GAME_TICKERS}
+
+    def to_dict(self) -> dict:
+        return {"cash": self.cash}
 
     def purchase_shares(self, ticker: str, amount: int) -> None:
         max_shares = math.floor(self.cash / self.market.stock_prices[ticker])
@@ -60,6 +75,7 @@ class Player:
 
 class Stocks:
     def __init__(self) -> None:
+        self.players: dict[str, Player] = {}
         self.game_date = 0
 
         # Initial stock prices
@@ -126,9 +142,71 @@ class Stocks:
                 RICH_CONSOLE.print(f"{ticker}: ${old_price:6.2f} -> ${new_price:6.2f} [{'red' if price_change < 0 else 'green'}]({price_change:+3}%)")
 
     # Websocket control
+    async def close(self, player: Player) -> None:
+        print("Attempting to close player object:", player)
+
+        username = next((k for k, v in self.players.items() if v == player), None)
+        if username is not None:  # Shouldn't be possible, but just in case
+            print(f"  -> Deleted username: {username}")
+            del self.players[username]
+
+        if player.websocket.state not in {2, 3}:  # CLOSING, CLOSED
+            print("  -> Force closed socket")
+            await player.websocket.close()
+
+    async def emit(self, packet: Packet) -> None:
+        message = packet.serialize()
+        for player in list(self.players.values()):
+            try:
+                await player.websocket.send(message)
+
+            except ConnectionClosed:
+                await self.close(player)
+
+    async def process_packet(self, websocket: ServerConnection, packet: dict[str, typing.Any]) -> None:
+        async def respond(response: Packet) -> None:
+            await websocket.send(response.serialize({"callback": packet.get("callback")}))
+
+        match packet:
+            case {"type": "join", "data": {"username": username}}:
+                if username.lower() in {k.lower() for k in self.players}:
+                    return await respond(Packet(type = "error", data = {"message": "Name taken."}))
+
+                if not (2 < len(username) <= 22):
+                    return await respond(Packet(type = "error", data = {"message": "Name too short/long."}))
+                
+                if username.lower() in {"admin", "moderator", "system", "owner", "support", "developer"}:
+                    return await respond(Packet(type = "error", data = {"message": "Name banned."}))
+
+                username = username.strip()
+                if not username:
+                    return await respond(Packet(type = "error", data = {"message": "Name empty."}))
+
+                self.players[username] = Player(websocket, self)
+                setattr(websocket, "player", self.players[username])
+
+                await self.emit(Packet(
+                    type = "players",
+                    data = {k: v.to_dict() for k, v in self.players.items()}
+                ))
+                await respond(Packet(type = "acknowledge", data = {}))
+
+            case _:
+                await websocket.send(json.dumps({"type": "error", "data": {"message": "Malformed request."}}))
+                await respond(Packet(type = "error", data = {"message": "Malformed request."}))
+
     async def handle_websocket(self, websocket: ServerConnection) -> None:
-        async for message in websocket:
-            print(message)
+        try:
+            async for message in websocket:
+                await self.process_packet(websocket, json.loads(message))
+
+        except json.JSONDecodeError:
+            pass
+
+        except ConnectionClosed:
+            print("aaa?")
+            if (player := getattr(websocket, "player")) is not None:
+                await self.close(player)
 
 # Launch websocket handling
 async def main():

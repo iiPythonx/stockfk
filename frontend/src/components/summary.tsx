@@ -1,3 +1,5 @@
+import { useRef, useState } from "preact/hooks";
+import type GameClient from "../game";
 import "./summary.css";
 
 export function Summary() {
@@ -6,7 +8,16 @@ export function Summary() {
     </section>
 }
 
-export function Welcome() {
+export function Welcome({ client }: { client: GameClient }) {
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [error, setError] = useState<string | null>(null);
+
+    const handleJoin = async () => {
+        if (!inputRef.current) return;
+        setError(null);
+        setError(await client.join(inputRef.current.value));
+    };
+
     return <section>
         <h3>Welcome to StockFuck!</h3>
         <fieldset style = {{ alignItems: "center" }}>
@@ -19,8 +30,11 @@ export function Welcome() {
         <fieldset>
             <legend>Naming</legend>
             <label for = "username" style = {{ alignSelf: "start" }}>Give yourself a name:</label>
-            <input id = "username" placeholder = "Anything will work!" />
-            <button style = {{ alignSelf: "end" }}>Join</button>
+            <input id = "username" placeholder = "Anything will work!" ref = {inputRef} />
+            <div className = "flex" style = {{ alignItems: "center", justifyContent: "space-between" }}>
+                <span className = "error">{error}</span>
+                <button onClick = {handleJoin}>Join</button>
+            </div>
         </fieldset>
     </section>;
 }
